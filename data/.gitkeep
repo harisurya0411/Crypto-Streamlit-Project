@@ -1,0 +1,3 @@
+This keeps the empty data/ folder tracked in git. auth.py and utils.py
+create users.json and per-user holdings_<username>.csv files here
+automatically - there's no bundled sample data, each account starts empty.
