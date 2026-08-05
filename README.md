@@ -63,3 +63,11 @@ crypto-portfolio/
 2. Go to https://share.streamlit.io → sign in with GitHub → "New app"
 3. Select your repo, branch `main`, main file path `Dashboard.py` → Deploy
 4. You'll get a public URL like `https://your-app-name.streamlit.app/`
+
+## Features
+
+- Live CoinGecko API
+- Interactive dashboard
+- Portfolio analytics
+- CSV import/export
+- Exchange map
