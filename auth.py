@@ -1,10 +1,11 @@
 """
-Login / Sign Up gate, shared by every page.
+Login / Sign Up gate for the portfolio pages (My Portfolio, Add Holding).
+The market-analysis pages are public and need no account.
 
 Accounts stored in data/users.json with hashed passwords. Each user gets
 their OWN holdings file (data/holdings_<username>.csv), created empty
-the first time they log in - no shared sample data, just like a real
-account-based app.
+the first time they log in. The demo "guest" account starts with a sample
+portfolio priced from real historical closes (see utils.DEMO_PORTFOLIO).
 
 NOTE: on Streamlit Community Cloud the filesystem resets on redeploy,
 so accounts/data aren't permanent. A production app would swap this
@@ -16,7 +17,7 @@ import json
 import os
 import hashlib
 
-USERS_FILE = "data/users.json"
+USERS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "users.json")
 DEMO_USERNAME = "guest"
 DEMO_PASSWORD = "crypto123"
 
@@ -46,6 +47,7 @@ def check_login():
         return
 
     st.title("🪙 Crypto Portfolio Tracker")
+    st.caption("Log in to track your own holdings. The market-analysis pages in the sidebar are open to everyone.")
 
     mode = st.radio(
         "mode", ["🔑 Log In", "📝 Sign Up"], horizontal=True, label_visibility="collapsed"
@@ -85,8 +87,11 @@ def check_login():
 
 
 def show_logout_button():
+    if not st.session_state.get("logged_in"):
+        return
     if st.sidebar.button("🚪 Log out"):
         st.session_state["logged_in"] = False
+        st.session_state.pop("username", None)
         st.rerun()
     if st.session_state.get("username"):
         st.sidebar.caption(f"Logged in as **{st.session_state['username']}**")
